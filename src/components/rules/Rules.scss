@@ -1,0 +1,25 @@
+.add-rule {
+  display: flex;
+  flex-basis: 100%;
+  justify-content: center;
+  margin-top: 5%;
+  .tab-class {
+    background: #e8e8e8;
+    padding: 10px;
+  }
+  .tab-content {
+    background: #fff;
+    margin: 1%;
+    padding: 5px;
+    display: flex;
+    .condition-menu {
+      display: flex;
+      flex-basis: 100%;
+      .header {
+        flex-basis: 100%;
+        display: inline-flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}

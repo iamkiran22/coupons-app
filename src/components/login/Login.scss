@@ -1,0 +1,14 @@
+.login-container {
+  display: inline-flex;
+  flex-flow: column;
+  margin: 10% auto;
+  padding: 20px 10px;
+  flex-basis: 42%;
+  align-items: center;
+  background-color: #eeeeee;
+  border-radius: 8px;
+}
+
+.field {
+  color: red;
+}

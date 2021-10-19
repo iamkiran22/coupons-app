@@ -1,0 +1,24 @@
+.coupons-container {
+  display: inline-flex;
+  background: #f2f1ef;
+  margin: 0% auto;
+  flex-basis: 95%;
+  padding: 10px;
+  .coupons-menu {
+    display: inline-flex;
+    flex-basis: 100%;
+    .create-button {
+      display: inline-flex;
+      justify-content: flex-end;
+      flex-basis: 100%;
+    }
+  }
+}
+
+.tab-class {
+  flex-basis: 100%;
+}
+
+.tab-content {
+  display: flex;
+}
