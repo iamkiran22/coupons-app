@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import couponReducer from "./reducers/coupon-reducer";
 import loginReducer from "./reducers/login-reducer";
 
 export const store = configureStore({
   reducer: {
     login: loginReducer,
+    coupon: couponReducer,
   },
 });
 

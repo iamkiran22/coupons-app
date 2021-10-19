@@ -2,20 +2,21 @@ import moment from "moment";
 
 const Serializer = () => {
   const setRuleExpression = (objArr: Array<{ [key: string]: any }>) => {
-    let expression = "";
-    let booleanStrings = ["true", "false"];
+    const booleanStrings = ["true", "false"];
     const encodeInQuotes = (value: string | number | boolean) => {
       if (typeof value === "string" && !booleanStrings.includes(value)) {
         return '"' + value + '"';
       }
       return value;
     };
-    objArr.forEach((obj) => {
-      expression = `${expression} ${obj.type}${obj.operator}${encodeInQuotes(
-        obj.value
-      )} ${obj.logical_operator || ""}`;
-    });
-    return expression.trim();
+    return objArr
+      .reduce((acc: string, obj: { [key: string]: any }) => {
+        acc = `${acc} ${obj.type}${obj.operator}${encodeInQuotes(obj.value)} ${
+          obj.logical_operator || ""
+        }`;
+        return acc;
+      }, "")
+      .trim();
   };
 
   const requestPayload = (data: { [key: string]: any }) => {

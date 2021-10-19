@@ -3,6 +3,9 @@ import { Tabs, Button, Select } from "antd";
 import "./Coupons.scss";
 import { CouponModal } from "./CouponModal";
 import CouponSerializer from "../../serializers/coupon-serializer";
+import { useDispatch } from "react-redux";
+import { createCoupon } from "../../reducers/coupon-reducer";
+import { CouponTable } from "./CouponTable";
 
 type RequiredMark = boolean | "optional";
 
@@ -49,6 +52,7 @@ export const Coupons: React.FC<any> = () => {
 
 const CouponsMenuContent: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const dispatch = useDispatch();
 
   const showModal = (bool: boolean) => {
     setIsModalVisible(bool);
@@ -56,7 +60,8 @@ const CouponsMenuContent: React.FC = () => {
 
   const addNewCoupon = (formData: any) => {
     const payload = CouponSerializer.requestPayload(formData);
-    console.log("DISPATCH", payload);
+    console.log("DISPATCHED", payload);
+    dispatch(createCoupon(payload));
   };
 
   return (
@@ -70,6 +75,9 @@ const CouponsMenuContent: React.FC = () => {
           displayModal={showModal}
           callback={addNewCoupon}
         />
+      </div>
+      <div className="coupon-table">
+        <CouponTable />
       </div>
     </div>
   );

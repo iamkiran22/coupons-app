@@ -7,10 +7,14 @@
   .coupons-menu {
     display: inline-flex;
     flex-basis: 100%;
+    flex-flow: column;
     .create-button {
       display: inline-flex;
       justify-content: flex-end;
       flex-basis: 100%;
+    }
+    .coupon-table {
+      margin-top: 20px;
     }
   }
 }
