@@ -144,7 +144,6 @@ export const CouponModal: React.FC<{
         <Form.Item name="valid_from" label="Valid From">
           <Space direction="vertical" size={12}>
             <DatePicker
-              //   defaultValue={moment(new Date(), dateFormat)}
               format={dateFormat}
               onChange={(ev: any) => {
                 const dateStr = ev.format(dateFormat);
@@ -159,7 +158,6 @@ export const CouponModal: React.FC<{
         <Form.Item name="valid_until" label="Valid Until">
           <Space direction="vertical" size={12}>
             <DatePicker
-              //   defaultValue={moment(new Date(), dateFormat)}
               format={dateFormat}
               onChange={(ev: any) => {
                 const dateStr = ev.format(dateFormat);

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Tabs, Button, Select } from "antd";
 import "./Coupons.scss";
 import { CouponModal } from "./CouponModal";
+import CouponSerializer from "../../serializers/coupon-serializer";
 
 type RequiredMark = boolean | "optional";
 
@@ -54,7 +55,8 @@ const CouponsMenuContent: React.FC = () => {
   };
 
   const addNewCoupon = (formData: any) => {
-    console.log(formData);
+    const payload = CouponSerializer.requestPayload(formData);
+    console.log("DISPATCH", payload);
   };
 
   return (
