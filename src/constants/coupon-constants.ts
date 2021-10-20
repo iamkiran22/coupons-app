@@ -4,7 +4,7 @@ export const CouponTypesOptions = [
     label: "Coupon 1",
   },
   {
-    value: "100000002",
+    value: "100000000",
     label: "Coupon 2",
   },
 ];

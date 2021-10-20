@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Tabs, Button, Select, message } from "antd";
+import React, { useState } from "react";
+import { Tabs, Button, Select } from "antd";
 import "./Coupons.scss";
 import { CouponModal } from "./CouponModal";
 import CouponSerializer from "../../serializers/coupon-serializer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createCoupon } from "../../reducers/coupon-reducer";
 import { CouponTable } from "./CouponTable";
-import { RootState } from "../../store";
 
 type RequiredMark = boolean | "optional";
 
@@ -61,11 +60,7 @@ const CouponsMenuContent: React.FC = () => {
 
   const addNewCoupon = (formData: any) => {
     const payload = CouponSerializer.requestPayload(formData);
-    console.log("DISPATCHED", payload);
     dispatch(createCoupon(payload));
-    // .then((res: any) => {
-    //   message.success(res);
-    // });
   };
 
   return (

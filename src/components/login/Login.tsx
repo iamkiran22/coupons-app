@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox, Spin } from "antd";
 import "./Login.scss";
 import { useSelector, useDispatch } from "react-redux";
 import { makeLogin } from "../../reducers/login-reducer";
@@ -34,6 +34,7 @@ export const Login: React.FC<{}> = ({}) => {
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
+        style={{ filter: loginState.loading ? "blur(2px)" : "none" }}
       >
         <Form.Item
           name="username"
@@ -69,6 +70,7 @@ export const Login: React.FC<{}> = ({}) => {
           </Button>
         </Form.Item>
       </Form>
+      {loginState.loading && <Spin />}
     </div>
   );
 };

@@ -14,10 +14,8 @@ class ApiAxios {
     return { ...this.headers };
   }
 
-  updateHeadersWithUserInfo(userId: string) {
-    const headersData = this.getHeaders();
-    headersData.headers["userid"] = userId;
-    this.headers = { ...headersData };
+  updateHeadersWithSession(session_id: string) {
+    this.headers.headers["session_id"] = session_id;
   }
 
   async get(url: string) {
@@ -25,20 +23,21 @@ class ApiAxios {
   }
 
   async post(url: string, payload: any = {}) {
-    // const url = `${hostName}/coupons`;
-    // try {
-    //   const response = await Axios.post(url, payload);
-    //   return response;
-    // } catch (error: any) {
-    //   throw error.data;
-    // }
     try {
       const response = await axios.post(url, payload, this.getHeaders());
       return response.data;
     } catch (e: any) {
       throw e.response.data;
     }
-    // return axios.post(url, payload, this.getHeaders());
+  }
+
+  async patch(url: string, payload: any = {}) {
+    try {
+      const response = await axios.patch(url, payload, this.getHeaders());
+      return response.data;
+    } catch (e: any) {
+      throw e.response.data;
+    }
   }
 }
 

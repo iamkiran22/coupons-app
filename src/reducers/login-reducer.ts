@@ -1,25 +1,29 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import LoginAPI from "../api/LoginAPI";
+import Axios from "../utils/Axios";
+import { message } from "antd";
 
 export interface LoginState {
-  username: string;
-  password: string;
-  sessionCode: string;
+  session_id: string;
   loggedIn: boolean;
+  loading: boolean;
+  user_name: string;
+  role: string;
 }
 
 const initialState: LoginState = {
-  username: "",
-  password: "",
-  sessionCode: "",
+  session_id: "",
   loggedIn: false,
+  loading: false,
+  user_name: "",
+  role: "",
 };
 
 export const makeLogin = createAsyncThunk(
   "login/user",
   async (userObj: any, thunkAPI) => {
     const response = await LoginAPI.loginUser(userObj);
-    return response.data;
+    return response;
   }
 );
 
@@ -27,36 +31,58 @@ export const loginSlice = createSlice({
   name: "login",
   initialState,
   reducers: {
-    // increment: (state) => {
-    //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
-    //   // doesn't actually mutate the state because it uses the Immer library,
-    //   // which detects changes to a "draft state" and produces a brand new
-    //   // immutable state based off those changes
-    //   state.value += 1;
-    // },
-    // loginUser: (state, action) => {
-    //   //   state.value -= 1;
-    //   console.log("STATE", action.payload);
-    // },
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload;
-    // },
+    checkUserLogin(state) {
+      const session_id = <string>localStorage.getItem("session_id");
+      const role = <string>localStorage.getItem("role");
+      const user_name = <string>localStorage.getItem("user_name");
+      if (session_id) {
+        state.session_id = session_id;
+        state.loggedIn = true;
+        state.role = role;
+        state.user_name = user_name;
+        //UPDATE SESSION ID
+        Axios.updateHeadersWithSession(session_id);
+      }
+    },
+    logout(state) {
+      Axios.updateHeadersWithSession("");
+      localStorage.clear();
+      state.role = "";
+      state.user_name = "";
+      state.session_id = "";
+      state.loading = false;
+      state.loggedIn = false;
+      message.info("You have logged out successfully");
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(makeLogin.fulfilled, (state, action: any) => {
-      // Add user to the state array
-      state.sessionCode = action.payload.response;
       state.loggedIn = true;
+      state.loading = false;
+      const { session_id, role, user_name } = action.payload;
+      state.session_id = session_id;
+      state.role = role;
+      state.user_name = user_name;
+      localStorage.setItem("session_id", session_id);
+      localStorage.setItem("role", role);
+      localStorage.setItem("user_name", user_name);
+      //UPDATE SESSION ID
+      Axios.updateHeadersWithSession(action.payload.session_id);
+      message.success("You have logged in successfully");
     });
     builder.addCase(makeLogin.rejected, (state, action) => {
-      // Add user to the state array
-      state.sessionCode = "";
+      state.session_id = "";
       state.loggedIn = false;
+      state.loading = false;
+      message.warning("There is an error while processing login request");
+    });
+    builder.addCase(makeLogin.pending, (state, action) => {
+      state.loading = true;
     });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {} = loginSlice.actions;
+export const { checkUserLogin, logout } = loginSlice.actions;
 
 export default loginSlice.reducer;
