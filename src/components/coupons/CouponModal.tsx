@@ -8,6 +8,7 @@ import {
   DatePicker,
   Space,
   Select,
+  message,
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import moment from "moment";
@@ -23,6 +24,9 @@ import {
   OperatorOptions,
   StatusOptions,
 } from "../../constants/coupon-constants";
+import { useDispatch } from "react-redux";
+import CouponSerializer from "../../serializers/coupon-serializer";
+import { createCoupon } from "../../reducers/coupon-reducer";
 
 type RequiredMark = boolean | "optional";
 
@@ -31,9 +35,10 @@ const dateFormat = "YYYY/MM/DD";
 export const CouponModal: React.FC<{
   show: boolean;
   displayModal: (bool: boolean) => void;
-  callback: (formData: any) => void;
-}> = ({ show, displayModal, callback }) => {
+}> = ({ show, displayModal }) => {
   const [isModalVisible, setIsModalVisible] = useState(show);
+  const dispatch: any = useDispatch();
+  const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [caseOperatorOptionsObj, setCaseOperatorOptions] = useState({} as any);
   const [caseComponentsObj, setCaseComponentsOptions] = useState({} as any);
 
@@ -54,17 +59,30 @@ export const CouponModal: React.FC<{
     setIsModalVisible(show);
   }, [show]);
 
+  const addNewCoupon = (formData: any) => {
+    const payload = CouponSerializer.requestPayload(formData);
+    dispatch(createCoupon(payload))
+      .then((res: any) => {
+        setConfirmLoading(false);
+        displayModal(false);
+      })
+      .catch((err: any) => {
+        console.log("Error while creating coupon");
+        setConfirmLoading(false);
+      });
+  };
+
   const handleOk = () => {
+    setConfirmLoading(true);
     form
       .validateFields()
       .then((values) => {
-        console.log(values);
         form.resetFields();
-        callback(values);
-        displayModal(false);
+        addNewCoupon(values);
       })
       .catch((info) => {
         console.log("Validate Failed:", info);
+        setConfirmLoading(false);
       });
   };
 
@@ -98,6 +116,7 @@ export const CouponModal: React.FC<{
       onOk={handleOk}
       onCancel={handleCancel}
       destroyOnClose={true}
+      confirmLoading={confirmLoading}
     >
       <Form
         form={form}

@@ -52,15 +52,9 @@ export const Coupons: React.FC<any> = () => {
 
 const CouponsMenuContent: React.FC = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const dispatch: any = useDispatch();
 
   const showModal = (bool: boolean) => {
     setIsModalVisible(bool);
-  };
-
-  const addNewCoupon = (formData: any) => {
-    const payload = CouponSerializer.requestPayload(formData);
-    dispatch(createCoupon(payload));
   };
 
   return (
@@ -69,11 +63,7 @@ const CouponsMenuContent: React.FC = () => {
         <Button type="primary" onClick={() => showModal(true)}>
           Create Coupons
         </Button>
-        <CouponModal
-          show={isModalVisible}
-          displayModal={showModal}
-          callback={addNewCoupon}
-        />
+        <CouponModal show={isModalVisible} displayModal={showModal} />
       </div>
       <div className="coupon-table">
         <CouponTable />

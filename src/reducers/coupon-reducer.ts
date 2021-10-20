@@ -16,8 +16,15 @@ const initialState: CouponState = {
 export const createCoupon = createAsyncThunk(
   "coupon/create_coupon",
   async (couponData: any, thunkAPI) => {
-    const response = await CouponAPI.createCoupon(couponData);
-    return response;
+    try {
+      const response = await CouponAPI.createCoupon(couponData);
+      return Promise.resolve(response);
+    } catch (err: any) {
+      if (!err.response) {
+        throw err;
+      }
+      return Promise.reject(err.response.data);
+    }
   }
 );
 

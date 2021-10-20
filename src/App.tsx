@@ -9,7 +9,6 @@ import { Provider, useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import fwIcon from "./assets/images/fw.png";
 import { checkUserLogin, logout } from "./reducers/login-reducer";
-import { getCoupons } from "./reducers/coupon-reducer";
 import { LogoutOutlined } from "@ant-design/icons";
 
 function App() {
@@ -46,8 +45,10 @@ const AppContainer: React.FC = ({ children }) => {
     if (!loginState.loading) {
       if (loginState.loggedIn) {
         history.push("/coupons");
+        document.body.classList.remove("login-background");
       } else {
         history.push("/login");
+        document.body.classList.add("login-background");
       }
     }
   }, [loginState]);
@@ -62,17 +63,7 @@ const AppContainer: React.FC = ({ children }) => {
   };
 
   return (
-    <section
-      className={"container"}
-      style={
-        loginState.loggedIn
-          ? {}
-          : {
-              backgroundImage: `url("https://website-assets-fw.freshworks.com/attachments/cktxxarxe02f2j5g0sq5x7bps-freshworks-hpbanner-min.one-half.png")`,
-              backgroundSize: `cover`,
-            }
-      }
-    >
+    <section className={"container"}>
       {loginState.loggedIn && (
         <header>
           <img src={fwIcon} />
