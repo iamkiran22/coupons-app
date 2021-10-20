@@ -1,119 +1,17 @@
+import Axios from "../utils/Axios";
+
+const hostName = "http://364b-2405-201-c00a-20a9-d5b9-fc3b-e6de-7485.ngrok.io";
+
 const CouponAPI = {
-  createCoupon: (payload: { [key: string]: any }) =>
-    Promise.resolve({
-      data: {
-        ...payload,
-        id: Math.random().toString(36).substring(7),
-        status: "CREATED",
-      },
-    }),
-  getCoupons: () =>
-    Promise.resolve({
-      data: [
-        {
-          id: 370224214243819521,
-          coupon_name: "FRSH 201",
-          description:
-            "This type of coupons to be used for FWCRM enterprise customer",
-          coupon_type_id: 100000000,
-          discount_type: "PERCENTAGE",
-          discount_percentage: 10,
-          currency_code: "USD",
-          has_rule: false,
-          valid_from: "2019-10-09T22:17:18.734+0000",
-          duration_type: "ONE_TIME",
-          status: "DELETED",
-          apply_on: "INVOICE_AMOUNT",
-          applicable_subscription_id: 123456789,
-          created_at: "2021-10-18T14:58:51.109+0000",
-          last_updated_at: "2021-10-18T15:04:02.226+0000",
-        },
-        {
-          id: 369766716072280067,
-          coupon_name: "test123",
-          description: "this is a test coupon",
-          coupon_type_id: 100000000,
-          discount_type: "PERCENTAGE",
-          discount_percentage: 10,
-          currency_code: "INR",
-          has_rule: true,
-          rule_expr: 'plan_id = "sales_360" && plan_qty > 5',
-          valid_from: "2019-10-09T22:17:18.734+0000",
-          duration_type: "ONE_TIME",
-          status: "ACTIVE",
-          apply_on: "INVOICE_AMOUNT",
-          created_at: "2021-10-17T08:40:55.045+0000",
-        },
-        {
-          id: 370224214243819521,
-          coupon_name: "FRSH 201",
-          description:
-            "This type of coupons to be used for FWCRM enterprise customer",
-          coupon_type_id: 100000000,
-          discount_type: "PERCENTAGE",
-          discount_percentage: 10,
-          currency_code: "USD",
-          has_rule: false,
-          valid_from: "2019-10-09T22:17:18.734+0000",
-          duration_type: "ONE_TIME",
-          status: "DELETED",
-          apply_on: "INVOICE_AMOUNT",
-          applicable_subscription_id: 123456789,
-          created_at: "2021-10-18T14:58:51.109+0000",
-          last_updated_at: "2021-10-18T15:04:02.226+0000",
-        },
-        {
-          id: 369766716072280067,
-          coupon_name: "TK209",
-          description: "this is a test coupon",
-          coupon_type_id: 100000000,
-          discount_type: "PERCENTAGE",
-          discount_percentage: 10,
-          currency_code: "INR",
-          has_rule: true,
-          rule_expr: 'plan_id = "sales_360" && plan_qty > 5',
-          valid_from: "2019-10-09T22:17:18.734+0000",
-          duration_type: "ONE_TIME",
-          status: "ACTIVE",
-          apply_on: "INVOICE_AMOUNT",
-          created_at: "2021-10-17T08:40:55.045+0000",
-        },
-        {
-          id: 370224214243819521,
-          coupon_name: "FRSH 301",
-          description:
-            "This type of coupons to be used for FWCRM enterprise customer",
-          coupon_type_id: 100000000,
-          discount_type: "PERCENTAGE",
-          discount_percentage: 10,
-          currency_code: "USD",
-          has_rule: false,
-          valid_from: "2019-10-09T22:17:18.734+0000",
-          duration_type: "ONE_TIME",
-          status: "DELETED",
-          apply_on: "INVOICE_AMOUNT",
-          applicable_subscription_id: 123456789,
-          created_at: "2021-10-18T14:58:51.109+0000",
-          last_updated_at: "2021-10-18T15:04:02.226+0000",
-        },
-        {
-          id: 369766716072280067,
-          coupon_name: "NEXT 123",
-          description: "this is a test coupon",
-          coupon_type_id: 100000000,
-          discount_type: "PERCENTAGE",
-          discount_percentage: 10,
-          currency_code: "INR",
-          has_rule: true,
-          rule_expr: 'plan_id = "sales_360" && plan_qty > 5',
-          valid_from: "2019-10-09T22:17:18.734+0000",
-          duration_type: "ONE_TIME",
-          status: "DELETED",
-          apply_on: "INVOICE_AMOUNT",
-          created_at: "2021-10-17T08:40:55.045+0000",
-        },
-      ],
-    }),
+  createCoupon: async (payload: { [key: string]: any }) => {
+    const url = `${hostName}/coupons`;
+    return await Axios.post(url, payload);
+  },
+
+  getCoupons: async () => {
+    const url = `${hostName}/coupons`;
+    return Axios.get(url);
+  },
 };
 
 export default CouponAPI;

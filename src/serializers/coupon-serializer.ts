@@ -20,7 +20,12 @@ const Serializer = () => {
   };
 
   const requestPayload = (data: { [key: string]: any }) => {
-    const payload: { [key: string]: any } = { has_rule: false };
+    const payload: { [key: string]: any } = {
+      has_rule: false,
+      applicable_brand_id: 1,
+      currency_code: "USD",
+    };
+
     for (let [key, value] of Object.entries(data)) {
       if (value) {
         if (key === "rules" && value.length) {

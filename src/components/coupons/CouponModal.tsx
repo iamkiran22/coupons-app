@@ -141,7 +141,13 @@ export const CouponModal: React.FC<{
           ></Select>
         </Form.Item>
 
-        <Form.Item name="valid_from" label="Valid From">
+        <Form.Item
+          name="valid_from"
+          label="Valid From"
+          required
+          tooltip="This is a required field"
+          rules={[{ required: true, message: "Please select valid from" }]}
+        >
           <Space direction="vertical" size={12}>
             <DatePicker
               format={dateFormat}
@@ -187,9 +193,9 @@ export const CouponModal: React.FC<{
         <Form.Item
           name="duration_type"
           label="Duration Type"
-          //   required
-          //   tooltip="This is a required field"
-          //   rules={[{ required: true, message: "Please select duration type" }]}
+          required
+          tooltip="This is a required field"
+          rules={[{ required: true, message: "Please select duration type" }]}
         >
           <Select
             options={[...DurationTypesOptions]}

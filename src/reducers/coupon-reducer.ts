@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import CouponAPI from "../api/CouponAPI";
+import { message } from "antd";
 
 export interface CouponState {
   [key: string]: any;
@@ -8,13 +9,14 @@ export interface CouponState {
 const initialState: CouponState = {
   coupons: [],
   loading: false,
+  errors: null,
 };
 
 export const createCoupon = createAsyncThunk(
   "coupon/create_coupon",
   async (couponData: any, thunkAPI) => {
     const response = await CouponAPI.createCoupon(couponData);
-    return response.data;
+    return response;
   }
 );
 
@@ -34,25 +36,30 @@ export const couponSlice = createSlice({
     /* Create coupons */
     builder.addCase(createCoupon.fulfilled, (state, action: any) => {
       state.coupons.push(action.payload);
-      state.loading = true;
+      state.loading = false;
+      message.success("Coupon created successfully");
     });
     builder.addCase(createCoupon.rejected, (state, action) => {
       state.loading = false;
+      state.errors = action.error;
+      message.error(action.error.message || "Please try again later");
     });
     builder.addCase(createCoupon.pending, (state, action) => {
-      state.loading = false;
+      state.loading = true;
     });
 
     /* Get coupons */
     builder.addCase(getCoupons.fulfilled, (state, action: any) => {
       state.coupons = action.payload;
-      state.loading = true;
+      state.loading = false;
+      state.errors = null;
     });
     builder.addCase(getCoupons.rejected, (state, action) => {
       state.loading = false;
+      state.errors = action.error;
     });
     builder.addCase(getCoupons.pending, (state, action) => {
-      state.loading = false;
+      state.loading = true;
     });
   },
 });

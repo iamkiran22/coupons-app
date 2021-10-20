@@ -1,10 +1,10 @@
 export const CouponTypesOptions = [
   {
-    value: "999999999",
+    value: "100000003",
     label: "Coupon 1",
   },
   {
-    value: "888888888",
+    value: "100000002",
     label: "Coupon 2",
   },
 ];
