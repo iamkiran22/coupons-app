@@ -1,12 +1,14 @@
 .login-container {
   display: inline-flex;
   flex-flow: column;
-  margin: 10% auto;
-  padding: 20px 10px;
-  flex-basis: 42%;
+  margin: 15% auto;
+  padding: 50px 10px 0px 10px;
+  flex-basis: 40%;
   align-items: center;
-  background-color: #eeeeee;
+  background-color: ghostwhite;
   border-radius: 8px;
+  height: 30%;
+  border: 5px solid #ccc;
 }
 
 .field {

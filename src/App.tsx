@@ -62,7 +62,17 @@ const AppContainer: React.FC = ({ children }) => {
   };
 
   return (
-    <section className={"container"}>
+    <section
+      className={"container"}
+      style={
+        loginState.loggedIn
+          ? {}
+          : {
+              backgroundImage: `url("https://website-assets-fw.freshworks.com/attachments/cktxxarxe02f2j5g0sq5x7bps-freshworks-hpbanner-min.one-half.png")`,
+              backgroundSize: `cover`,
+            }
+      }
+    >
       {loginState.loggedIn && (
         <header>
           <img src={fwIcon} />
