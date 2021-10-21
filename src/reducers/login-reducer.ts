@@ -22,8 +22,12 @@ const initialState: LoginState = {
 export const makeLogin = createAsyncThunk(
   "login/user",
   async (userObj: any, thunkAPI) => {
-    const response = await LoginAPI.loginUser(userObj);
-    return response;
+    try {
+      const response = await LoginAPI.loginUser(userObj);
+      return response;
+    } catch (e: any) {
+      return thunkAPI.rejectWithValue(e.error);
+    }
   }
 );
 
@@ -68,13 +72,11 @@ export const loginSlice = createSlice({
       localStorage.setItem("user_name", user_name);
       //UPDATE SESSION ID
       Axios.updateHeadersWithSession(action.payload.session_id);
-      message.success("You have logged in successfully");
     });
     builder.addCase(makeLogin.rejected, (state, action) => {
       state.session_id = "";
       state.loggedIn = false;
       state.loading = false;
-      message.warning("There is an error while processing login request");
     });
     builder.addCase(makeLogin.pending, (state, action) => {
       state.loading = true;

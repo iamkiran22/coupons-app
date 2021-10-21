@@ -1,11 +1,11 @@
 export const CouponTypesOptions = [
   {
     value: "100000003",
-    label: "Coupon 1",
+    label: "Loyality",
   },
   {
     value: "100000000",
-    label: "Coupon 2",
+    label: "Seasonal",
   },
 ];
 

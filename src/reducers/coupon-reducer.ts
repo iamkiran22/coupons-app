@@ -18,12 +18,9 @@ export const createCoupon = createAsyncThunk(
   async (couponData: any, thunkAPI) => {
     try {
       const response = await CouponAPI.createCoupon(couponData);
-      return Promise.resolve(response);
+      return response;
     } catch (err: any) {
-      if (!err.response) {
-        throw err;
-      }
-      return Promise.reject(err.response.data);
+      return thunkAPI.rejectWithValue(err.error);
     }
   }
 );
@@ -31,24 +28,40 @@ export const createCoupon = createAsyncThunk(
 export const getCoupons = createAsyncThunk(
   "coupon/get_coupons",
   async (couponData: any, thunkAPI) => {
-    const response = await CouponAPI.getCoupons();
-    return response.data;
+    try {
+      const response = await CouponAPI.getCoupons();
+      return response.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.error);
+    }
   }
 );
 
 export const approveCoupon = createAsyncThunk(
   "coupon/approve_coupon",
   async (id: string | number, thunkAPI) => {
-    const response = await CouponAPI.approveCoupon(id);
-    return response;
+    try {
+      const response = await CouponAPI.approveCoupon(id);
+      return response;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        "There is an error while approving your coupon"
+      );
+    }
   }
 );
 
 export const rejectCoupon = createAsyncThunk(
   "coupon/reject_coupon",
   async (id: string | number, thunkAPI) => {
-    const response = await CouponAPI.rejectCoupon(id);
-    return response;
+    try {
+      const response = await CouponAPI.rejectCoupon(id);
+      return thunkAPI.fulfillWithValue(response);
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(
+        "There is an error while rejecting your coupon"
+      );
+    }
   }
 );
 
@@ -59,14 +72,12 @@ export const couponSlice = createSlice({
   extraReducers: (builder) => {
     /* Create coupons */
     builder.addCase(createCoupon.fulfilled, (state, action: any) => {
-      state.coupons.push(action.payload);
+      state.coupons.unshift(action.payload);
       state.loading = false;
-      message.success("Coupon created successfully");
     });
     builder.addCase(createCoupon.rejected, (state, action) => {
       state.loading = false;
       state.errors = action.error;
-      message.error(action.error.message || "Please try again later");
     });
     builder.addCase(createCoupon.pending, (state, action) => {
       state.loading = true;
@@ -77,7 +88,6 @@ export const couponSlice = createSlice({
       state.coupons = action.payload;
       state.loading = false;
       state.errors = null;
-      message.success("Fetched all coupons successfully");
     });
     builder.addCase(getCoupons.rejected, (state, action) => {
       state.loading = false;
@@ -91,11 +101,11 @@ export const couponSlice = createSlice({
     builder.addCase(approveCoupon.fulfilled, (state, action: any) => {
       state.coupons = action.payload;
       state.additionalLoader = false;
-      message.info("Your coupon has been approved!");
+      // message.info("Your coupon has been approved!");
     });
     builder.addCase(approveCoupon.rejected, (state, action) => {
       state.additionalLoader = false;
-      message.error("There is an error while approving your coupon");
+      // message.error("There is an error while approving your coupon");
     });
     builder.addCase(approveCoupon.pending, (state, action) => {
       state.additionalLoader = true;
@@ -105,11 +115,11 @@ export const couponSlice = createSlice({
     builder.addCase(rejectCoupon.fulfilled, (state, action: any) => {
       state.coupons = action.payload;
       state.additionalLoader = false;
-      message.info("Your coupon has been rejected!");
+      // message.info("Your coupon has been rejected!");
     });
     builder.addCase(rejectCoupon.rejected, (state, action) => {
       state.additionalLoader = false;
-      message.error("There is an error while rejecting your coupon");
+      // message.error("There is an error while rejecting your coupon");
     });
     builder.addCase(rejectCoupon.pending, (state, action) => {
       state.additionalLoader = true;

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { Table, Tag, Space, Spin, Button } from "antd";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store";
+import { Table, Tag, Space, Spin, Button, message } from "antd";
+import { useSelector } from "react-redux";
+import { RootState, useAppDispatch } from "../../store";
 import {
   approveCoupon,
   getCoupons,
@@ -39,7 +39,8 @@ const columns = [
     key: "status",
     dataIndex: "status",
     render: (text: string, record: Record<string, any>) => {
-      if (record.status === "PENDING_APPROVAL") {
+      const role = localStorage.getItem("role");
+      if (record.status === "PENDING_APPROVAL" && role === "admin") {
         return (
           <Space size="middle">
             <span>{text}</span>
@@ -59,28 +60,46 @@ export const CouponTable: React.FC = () => {
   const {
     coupons: data,
     loading,
-    additionalLoader,
+    // additionalLoader,
   } = useSelector((state: RootState) => state.coupon);
   const loginState = useSelector((state: RootState) => state.login);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (loginState.loggedIn) {
-      dispatch(getCoupons(null));
+      dispatch(getCoupons(null))
+        .unwrap()
+        .then((res: any) => {
+          message.success("Fetched all coupons successfully");
+        })
+        .catch((e: any) => {
+          message.error(e?.error?.message || "Fetching coupons failed");
+        });
     }
   }, [loginState]);
 
-  useEffect(() => {
-    if (additionalLoader) {
-      dispatch(getCoupons(null));
-    }
-  }, [additionalLoader]);
-
-  const callback = (id: string, record: Record<string, any>) => {
+  const callback = async (id: string, record: Record<string, any>) => {
     const ids = ["approve", "reject"];
+    const msg: any = {
+      approve: "approved",
+      reject: "rejected",
+    };
     if (ids.includes(id)) {
       const func = id === "approve" ? approveCoupon : rejectCoupon;
-      dispatch(func(record.id));
+      try {
+        await dispatch(func(record.id)).unwrap();
+        message.success(`Your coupon has been ${msg["id"]}!`);
+        dispatch(getCoupons(null));
+      } catch (error: any) {
+        message.error(error);
+      }
+      // .then((res) => {
+      //   message.success(`Your coupon has been ${msg["id"]}!`);
+      //   dispatch(getCoupons(null));
+      // })
+      // .catch((e: any) => {
+      //   message.error(e);
+      // });
     }
   };
 

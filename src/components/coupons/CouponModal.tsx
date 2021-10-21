@@ -11,7 +11,6 @@ import {
   message,
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import moment from "moment";
 import "./Coupons.scss";
 import {
   BooleanOptions,
@@ -59,17 +58,17 @@ export const CouponModal: React.FC<{
     setIsModalVisible(show);
   }, [show]);
 
-  const addNewCoupon = (formData: any) => {
+  const addNewCoupon = async (formData: any) => {
     const payload = CouponSerializer.requestPayload(formData);
-    dispatch(createCoupon(payload))
-      .then((res: any) => {
-        setConfirmLoading(false);
-        displayModal(false);
-      })
-      .catch((err: any) => {
-        console.log("Error while creating coupon");
-        setConfirmLoading(false);
-      });
+    try {
+      await dispatch(createCoupon(payload)).unwrap();
+      message.success("Coupon created successfully");
+      displayModal(false);
+      setConfirmLoading(false);
+    } catch (e: any) {
+      message.error(e?.error?.message || "Please try back later");
+      setConfirmLoading(false);
+    }
   };
 
   const handleOk = () => {
@@ -197,13 +196,13 @@ export const CouponModal: React.FC<{
         <Form.Item
           name="status"
           label="Status"
-          //   required
-          //   tooltip="This is a required field"
-          //   rules={[{ required: true, message: "Please select status" }]}
+          required
+          tooltip="This is a required field"
+          rules={[{ required: true, message: "Please select status" }]}
         >
           <Select
             options={[...StatusOptions]}
-            defaultValue={"ACTIVE"}
+            // defaultValue={"ACTIVE"}
             placeholder="Status"
             style={{ width: 200 }}
           ></Select>

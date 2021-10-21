@@ -1,9 +1,9 @@
 import React from "react";
-import { Form, Input, Button, Checkbox, Spin } from "antd";
+import { Form, Input, Button, Checkbox, Spin, message } from "antd";
 import "./Login.scss";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { makeLogin } from "../../reducers/login-reducer";
-import { RootState } from "../../store";
+import { RootState, useAppDispatch } from "../../store";
 
 const labelStyle = {
   color: "#363636",
@@ -12,10 +12,16 @@ const labelStyle = {
 } as React.CSSProperties;
 
 export const Login: React.FC<{}> = ({}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const onFinish = (values: any) => {
-    dispatch(makeLogin(values));
+    dispatch(makeLogin(values))
+      .then((res: any) => {
+        message.success("You have logged in successfully");
+      })
+      .catch((e) => {
+        message.warning("There is an error while processing login request");
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {
