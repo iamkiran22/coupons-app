@@ -31,10 +31,11 @@ const TabMenus = [
   },
 ];
 
-export const Coupons: React.FC<any> = () => {
+export const Host: React.FC<any> = () => {
   return (
     <div className="coupons-container">
       <Tabs
+        destroyInactiveTabPane
         defaultActiveKey="1"
         className="tab-class"
         onChange={(ev) => console.log("Switch Tabs", ev)}
@@ -42,7 +43,7 @@ export const Coupons: React.FC<any> = () => {
         {TabMenus.map((tab) => (
           <TabPane tab={tab.label} key={tab.key}>
             <div className="tab-content">
-              <tab.component></tab.component>
+              <tab.component key={tab.key}></tab.component>
             </div>
           </TabPane>
         ))}

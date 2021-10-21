@@ -63,11 +63,7 @@ const columns = [
 ];
 
 export const CouponTable: React.FC = () => {
-  const {
-    coupons: data,
-    loading,
-    // additionalLoader,
-  } = useSelector((state: RootState) => state.coupon);
+  const { coupons, loading } = useSelector((state: RootState) => state.coupon);
   const loginState = useSelector((state: RootState) => state.login);
   const dispatch = useAppDispatch();
 
@@ -101,19 +97,12 @@ export const CouponTable: React.FC = () => {
       } catch (error: any) {
         message.error(error);
       }
-      // .then((res) => {
-      //   message.success(`Your coupon has been ${msg["id"]}!`);
-      //   dispatch(getCoupons(null));
-      // })
-      // .catch((e: any) => {
-      //   message.error(e);
-      // });
     }
   };
 
   return (
     <>
-      {!loading ? (
+      {!loading && coupons.length > 0 ? (
         <Table
           onRow={(record, rowIndex) => {
             return {
@@ -124,7 +113,7 @@ export const CouponTable: React.FC = () => {
             };
           }}
           columns={columns}
-          dataSource={data}
+          dataSource={coupons}
           pagination={{ position: ["topLeft", "bottomRight"] }}
         />
       ) : (

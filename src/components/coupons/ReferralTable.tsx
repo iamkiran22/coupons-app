@@ -8,6 +8,7 @@ import {
   getCouponsTypes,
   rejectCoupon,
 } from "../../reducers/coupon-reducer";
+import { getReferrals } from "../../reducers/referral-reducer";
 
 const columns = [
   {
@@ -40,99 +41,43 @@ const columns = [
     dataIndex: "referrer_rewarded",
     key: "referrer_rewarded",
   },
-  {
-    title: "Status",
-    key: "status",
-    dataIndex: "status",
-    render: (text: string, record: Record<string, any>) => {
-      const role = localStorage.getItem("role");
-      if (record.status === "PENDING_APPROVAL" && role === "admin") {
-        return (
-          <Space size="middle">
-            <span>{text}</span>
-            <Button id="approve">Approve</Button>
-            <Button id="reject" type="primary" danger>
-              Reject
-            </Button>
-          </Space>
-        );
-      }
-      return <span>{text}</span>;
-    },
-  },
 ];
 
 export const ReferralTable: React.FC = () => {
-  //   const {
-  //     referrals,
-  //     loading,
-  //   } = useSelector((state: RootState) => state.coupon);
-  //   const loginState = useSelector((state: RootState) => state.login);
-  //   const dispatch = useAppDispatch();
+  const { referrals, loading } = useSelector(
+    (state: RootState) => state.referral
+  );
 
-  //   useEffect(() => {
-  //     if (loginState.loggedIn) {
-  //       dispatch(getReferrals(null))
-  //         .unwrap()
-  //         .then((res: any) => {
-  //           message.success("Fetched all coupons successfully");
-  //         })
-  //         .catch((e: any) => {
-  //           message.error(e?.error?.message || "Fetching coupons failed");
-  //         });
-  //       //Fetch coupon types once
-  //       dispatch(getCouponsTypes(null));
-  //     }
-  //   }, [loginState]);
+  const loginState = useSelector((state: RootState) => state.login);
+  const dispatch = useAppDispatch();
 
-  //   const callback = async (id: string, record: Record<string, any>) => {
-  //     const ids = ["approve", "reject"];
-  //     const msg: any = {
-  //       approve: "approved",
-  //       reject: "rejected",
-  //     };
-  //     if (ids.includes(id)) {
-  //       const func = id === "approve" ? approveCoupon : rejectCoupon;
-  //       try {
-  //         await dispatch(func(record.id)).unwrap();
-  //         message.success(`Your coupon has been ${msg["id"]}!`);
-  //         dispatch(getCoupons(null));
-  //       } catch (error: any) {
-  //         message.error(error);
-  //       }
-  //       // .then((res) => {
-  //       //   message.success(`Your coupon has been ${msg["id"]}!`);
-  //       //   dispatch(getCoupons(null));
-  //       // })
-  //       // .catch((e: any) => {
-  //       //   message.error(e);
-  //       // });
-  //     }
-  //   };
+  useEffect(() => {
+    if (loginState.loggedIn) {
+      dispatch(getReferrals(null))
+        .unwrap()
+        .then((res: any) => {
+          message.success("Fetched all referred successfully");
+        })
+        .catch((e: any) => {
+          message.error(e?.error?.message || "Fetching referrals failed");
+        });
+    }
+  }, [loginState]);
 
   return (
     <>
-      <h1>Referral Table comes here !!!</h1>
-      {/* {!loading ? (
+      {!loading ? (
         <Table
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (event: any) => {
-                const id = event.target.parentElement.id || event.target.id;
-                callback(id, record);
-              },
-            };
-          }}
           columns={columns}
-          dataSource={data}
+          dataSource={referrals}
           pagination={{ position: ["topLeft", "bottomRight"] }}
         />
       ) : (
         <Spin
-          tip="&nbsp;&nbsp;Fetching Coupons..."
+          tip="&nbsp;&nbsp;Fetching Referrals..."
           style={{ justifyContent: "center", display: "flex" }}
         />
-      )} */}
+      )}
     </>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { Coupons } from "./components/coupons/Coupons";
+import { Host } from "./components/coupons/Coupons";
 import { Rules } from "./components/rules/Rules";
 import { Login } from "./components/login/Login";
 import { RootState, store } from "./store";
@@ -18,7 +18,7 @@ function App() {
         <AppContainer>
           <Switch>
             <Route path="/coupons">
-              <Coupons />
+              <Host />
             </Route>
             <Route path="/addrule">
               <Rules />
