@@ -26,8 +26,11 @@ import {
 import { useDispatch } from "react-redux";
 import CouponSerializer from "../../serializers/coupon-serializer";
 import { createCoupon } from "../../reducers/coupon-reducer";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 type RequiredMark = boolean | "optional";
+const { Option } = Select;
 
 const dateFormat = "YYYY/MM/DD";
 
@@ -40,6 +43,9 @@ export const CouponModal: React.FC<{
   const [confirmLoading, setConfirmLoading] = React.useState(false);
   const [caseOperatorOptionsObj, setCaseOperatorOptions] = useState({} as any);
   const [caseComponentsObj, setCaseComponentsOptions] = useState({} as any);
+  const couponTypes = useSelector(
+    (state: RootState) => state.coupon.couponTypes
+  );
 
   const [form] = Form.useForm();
   const [dealType, setDealType] = useState("");
@@ -153,10 +159,16 @@ export const CouponModal: React.FC<{
           rules={[{ required: true, message: "Please select a coupon type" }]}
         >
           <Select
-            options={[...CouponTypesOptions]}
+            // optionLabelProp={"name"}
             placeholder="Coupon Type"
             style={{ width: 200 }}
-          ></Select>
+          >
+            {couponTypes.map((item: any) => (
+              <Option key={item.id} value={item.id} label={item.name}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item
@@ -193,7 +205,7 @@ export const CouponModal: React.FC<{
           </Space>
         </Form.Item>
 
-        <Form.Item
+        {/* <Form.Item
           name="status"
           label="Status"
           required
@@ -206,7 +218,7 @@ export const CouponModal: React.FC<{
             placeholder="Status"
             style={{ width: 200 }}
           ></Select>
-        </Form.Item>
+        </Form.Item> */}
 
         <Form.Item
           name="duration_type"

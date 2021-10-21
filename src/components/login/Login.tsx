@@ -14,14 +14,13 @@ const labelStyle = {
 export const Login: React.FC<{}> = ({}) => {
   const dispatch = useAppDispatch();
 
-  const onFinish = (values: any) => {
-    dispatch(makeLogin(values))
-      .then((res: any) => {
-        message.success("You have logged in successfully");
-      })
-      .catch((e) => {
-        message.warning("There is an error while processing login request");
-      });
+  const onFinish = async (values: any) => {
+    try {
+      await dispatch(makeLogin(values)).unwrap();
+      message.success("You have logged in successfully");
+    } catch (e) {
+      message.warning("There is an error while processing login request");
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {

@@ -12,6 +12,10 @@ const CouponAPI = {
   getCoupons: async () => {
     return await Axios.get(baseURL);
   },
+  getCouponsTypes: async () => {
+    const url = `${hostName}/coupons/coupon-types`;
+    return await Axios.get(url);
+  },
   approveCoupon: async (couponId: string | number) => {
     const url = `${baseURL}/${couponId}/approve`;
     return await Axios.patch(url);

@@ -5,6 +5,7 @@ import { RootState, useAppDispatch } from "../../store";
 import {
   approveCoupon,
   getCoupons,
+  getCouponsTypes,
   rejectCoupon,
 } from "../../reducers/coupon-reducer";
 
@@ -75,6 +76,8 @@ export const CouponTable: React.FC = () => {
         .catch((e: any) => {
           message.error(e?.error?.message || "Fetching coupons failed");
         });
+      //Fetch coupon types once
+      dispatch(getCouponsTypes(null));
     }
   }, [loginState]);
 

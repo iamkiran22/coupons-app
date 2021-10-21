@@ -11,6 +11,7 @@ const initialState: CouponState = {
   loading: false,
   errors: null,
   additionalLoader: false,
+  couponTypes: [],
 };
 
 export const createCoupon = createAsyncThunk(
@@ -30,6 +31,18 @@ export const getCoupons = createAsyncThunk(
   async (couponData: any, thunkAPI) => {
     try {
       const response = await CouponAPI.getCoupons();
+      return response.data;
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue(err.error);
+    }
+  }
+);
+
+export const getCouponsTypes = createAsyncThunk(
+  "coupon/get_coupons_types",
+  async (couponData: any, thunkAPI) => {
+    try {
+      const response = await CouponAPI.getCouponsTypes();
       return response.data;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.error);
@@ -94,6 +107,20 @@ export const couponSlice = createSlice({
       state.errors = action.error;
     });
     builder.addCase(getCoupons.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    /* Get coupons types */
+    builder.addCase(getCouponsTypes.fulfilled, (state, action: any) => {
+      state.couponTypes = action.payload;
+      state.loading = false;
+      state.errors = null;
+    });
+    builder.addCase(getCouponsTypes.rejected, (state, action) => {
+      state.loading = false;
+      state.errors = action.error;
+    });
+    builder.addCase(getCouponsTypes.pending, (state, action) => {
       state.loading = true;
     });
 
