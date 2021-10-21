@@ -12,11 +12,6 @@ import { getReferrals } from "../../reducers/referral-reducer";
 
 const columns = [
   {
-    title: "Referral State",
-    dataIndex: "referral_state",
-    key: "referral_state",
-  },
-  {
     title: "Referral Code",
     dataIndex: "referral_code",
     key: "referral_code",
@@ -40,6 +35,14 @@ const columns = [
     title: "Referrer Rewarded",
     dataIndex: "referrer_rewarded",
     key: "referrer_rewarded",
+    render: (text: string) => {
+      return <span>{text ? "TRUE" : "FALSE"}</span>;
+    },
+  },
+  {
+    title: "Referral State",
+    dataIndex: "referral_state",
+    key: "referral_state",
   },
 ];
 

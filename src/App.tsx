@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import fwIcon from "./assets/images/fw.png";
 import { checkUserLogin, logout } from "./reducers/login-reducer";
 import { LogoutOutlined } from "@ant-design/icons";
+import { Tooltip } from "antd";
 
 function App() {
   return (
@@ -67,7 +68,13 @@ const AppContainer: React.FC = ({ children }) => {
       {loginState.loggedIn && (
         <header>
           <img src={fwIcon} />
-          <LogoutOutlined onClick={logOutUser} style={{ fontSize: "24px" }} />
+          <Tooltip placement="topLeft" title={<span>Logout</span>}>
+            {" "}
+            <LogoutOutlined
+              onClick={logOutUser}
+              style={{ fontSize: "24px" }}
+            />{" "}
+          </Tooltip>
         </header>
       )}
       {children}

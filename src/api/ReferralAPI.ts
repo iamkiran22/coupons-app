@@ -3,12 +3,12 @@ import URLHelper from "./URLHelper";
 
 const { hostName } = URLHelper;
 
-const baseURL = `${hostName}/coupon/referrals`;
+const baseURL = `${hostName}/coupons/referral`;
 
 const ReferralAPI = {
   getReferrals: async () => {
-    // return await Axios.get(baseURL);
-    return Promise.resolve({ data: mock.slice() });
+    return await Axios.get(baseURL);
+    // return Promise.resolve({ data: mock.slice() });
   },
 };
 
