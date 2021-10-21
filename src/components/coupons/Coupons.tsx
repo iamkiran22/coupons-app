@@ -6,6 +6,7 @@ import CouponSerializer from "../../serializers/coupon-serializer";
 import { useDispatch } from "react-redux";
 import { createCoupon } from "../../reducers/coupon-reducer";
 import { CouponTable } from "./CouponTable";
+import { ReferralTable } from "./ReferralTable";
 
 type RequiredMark = boolean | "optional";
 
@@ -73,7 +74,11 @@ const CouponsMenuContent: React.FC = () => {
 };
 
 const ReferralsMenuContent: React.FC = () => {
-  return <div className="referrals-menu">Referral Content</div>;
+  return (
+    <div className="referrals-menu">
+      <ReferralTable />
+    </div>
+  );
 };
 
 const SubscriptionsMenuContent: React.FC = () => {

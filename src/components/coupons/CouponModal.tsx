@@ -158,11 +158,7 @@ export const CouponModal: React.FC<{
           tooltip="This is a required field"
           rules={[{ required: true, message: "Please select a coupon type" }]}
         >
-          <Select
-            // optionLabelProp={"name"}
-            placeholder="Coupon Type"
-            style={{ width: 200 }}
-          >
+          <Select placeholder="Coupon Type" style={{ width: 200 }}>
             {couponTypes.map((item: any) => (
               <Option key={item.id} value={item.id} label={item.name}>
                 {item.name}

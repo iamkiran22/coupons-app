@@ -11,6 +11,11 @@ import {
 
 const columns = [
   {
+    title: "ID",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
     title: "Name",
     dataIndex: "coupon_name",
     key: "coupon_name",
